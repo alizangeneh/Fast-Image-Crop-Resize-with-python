@@ -1,0 +1,2 @@
+نصب پیش نیاز اجرا
+pip install PyQt5

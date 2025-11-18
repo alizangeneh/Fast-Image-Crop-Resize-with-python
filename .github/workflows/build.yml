@@ -36,17 +36,20 @@ jobs:
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then
             pyinstaller --onefile --windowed main.py -n simple-image-cropper.exe
+            zip -j simple-image-cropper-windows.zip dist/simple-image-cropper.exe
           elif [ "$RUNNER_OS" = "macOS" ]; then
             pyinstaller --onefile --windowed main.py -n simple-image-cropper-mac
+            zip -r simple-image-cropper-mac.zip dist/simple-image-cropper-mac.app
           else
             pyinstaller --onefile --windowed main.py -n simple-image-cropper-linux
+            zip -j simple-image-cropper-linux.zip dist/simple-image-cropper-linux
           fi
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: simple-image-cropper-${{ runner.os }}
-          path: dist/*
+          path: "*.zip"
 
   release:
     name: Create GitHub Release
@@ -62,6 +65,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/**/*
+          files: dist/**/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

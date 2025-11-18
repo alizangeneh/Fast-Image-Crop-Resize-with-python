@@ -35,11 +35,11 @@ jobs:
         shell: bash
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then
-            pyinstaller --onefile main.py -n simple-image-cropper.exe
+            pyinstaller --onefile --windowed main.py -n simple-image-cropper.exe
           elif [ "$RUNNER_OS" = "macOS" ]; then
-            pyinstaller --onefile main.py -n simple-image-cropper-mac
+            pyinstaller --onefile --windowed main.py -n simple-image-cropper-mac
           else
-            pyinstaller --onefile main.py -n simple-image-cropper-linux
+            pyinstaller --onefile --windowed main.py -n simple-image-cropper-linux
           fi
 
       - name: Upload build artifact

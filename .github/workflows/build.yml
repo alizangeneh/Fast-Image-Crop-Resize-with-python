@@ -29,6 +29,7 @@ jobs:
           pip install pyinstaller
 
       - name: Build executable
+        shell: bash
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then
             pyinstaller --onefile main.py -n simple-image-cropper.exe

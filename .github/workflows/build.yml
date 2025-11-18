@@ -36,14 +36,29 @@ jobs:
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then
             pyinstaller --onefile --windowed main.py -n simple-image-cropper.exe
-            zip -j simple-image-cropper-windows.zip dist/simple-image-cropper.exe
           elif [ "$RUNNER_OS" = "macOS" ]; then
             pyinstaller --onefile --windowed main.py -n simple-image-cropper-mac
-            zip -r simple-image-cropper-mac.zip dist/simple-image-cropper-mac.app
           else
             pyinstaller --onefile --windowed main.py -n simple-image-cropper-linux
-            zip -j simple-image-cropper-linux.zip dist/simple-image-cropper-linux
           fi
+
+      - name: Create ZIP file (Windows)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          Compress-Archive -Path dist\simple-image-cropper.exe -DestinationPath simple-image-cropper-windows.zip
+
+      - name: Create ZIP file (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          zip -r simple-image-cropper-mac.zip dist/simple-image-cropper-mac.app
+
+      - name: Create ZIP file (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          zip -j simple-image-cropper-linux.zip dist/simple-image-cropper-linux
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
